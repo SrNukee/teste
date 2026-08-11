@@ -1,44 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
+<title>Teste</title>
 
-aparse@5.4.1/papaparse.min.js"></script>
-</head>
-
-<body>
-
-<h1>Teste CSV</h1>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></scriptTeste CSV</h1>
 
 <div id="resultado">Carregando...</div>
 
 <script>
 
-const url =
-'https://docs.google.com/spreadsheets/d/e/2PACX-1vR0zYaCXFQTdPJ0ze_HCpABeOtC5kfLlwAwhzWBKV_7v0BEFab5osnH9XVdd6-OxNGkEuZYi3-gVqxM/pub?output=csv';
-
-Papa.parse(url,{
-    download:true,
-    header:true,
-
-    complete:function(results){
-
-        document.getElementById('resultado').innerHTML =
-        'Linhas encontradas: ' + results.data.length;
-
-        console.log(results.data);
-
-    },
-
-    error:function(err){
-
-        document.getElementById('resultado').innerHTML =
-        'Erro: ' + err;
-
-        console.error(err);
-
-    }
-});
+document.getElementById("resultado").innerHTML =
+"PapaParse carregou com sucesso ✅";
 
 </script>
 
