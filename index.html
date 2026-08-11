@@ -2,8 +2,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Teste CSV</title>
+<title>Teste Dashboard</title>
 
+<script src="https://cdn.></script>
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
 </head>
@@ -12,6 +13,10 @@
 <h1>Teste da Planilha</h1>
 
 <div id="resultado">Carregando...</div>
+
+<hr>
+
+<div id="grafico" style="width:100%;height:500px;"></div>
 
 <script>
 
@@ -30,7 +35,28 @@ Papa.parse(CSV_URL,{
             "Linhas encontradas: " + res.data.length +
             "<br><br>Primeiro Item: " + res.data[0].ITEM;
 
-        console.log(res.data);
+        const produtos = {};
+
+        res.data.forEach(linha => {
+
+            if(!linha.ITEM) return;
+
+            produtos[linha.ITEM] =
+                (produtos[linha.ITEM] || 0) + 1;
+
+        });
+
+        Plotly.newPlot(
+            'grafico',
+            [{
+                x:Object.keys(produtos),
+                y:Object.values(produtos),
+                type:'bar'
+            }],
+            {
+                title:'Quantidade por Produto'
+            }
+        );
 
     },
 
