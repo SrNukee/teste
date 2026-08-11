@@ -1,65 +1,350 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Teste Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<script srcjs"></script>
+<title>Dashboard Ecommerce</title>
+
+<script src="https://cdn.plot.ly/plotly-
 cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+<style>
+
+body{
+background:#0b1220;
+color:white;
+font-family:Segoe UI,Arial,sans-serif;
+margin:0;
+padding:20px;
+}
+
+h1{
+margin-bottom:20px;
+}
+
+.kpis{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:15px;
+margin-bottom:20px;
+}
+
+.card{
+background:#111827;
+padding:20px;
+border-radius:15px;
+box-shadow:0 0 15px rgba(0,0,0,.3);
+}
+
+.card h3{
+margin:0;
+color:#9ca3af;
+}
+
+.card h2{
+margin-top:10px;
+color:#22d3ee;
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:-20px;
+}
+
+.chart{
+background:#111827;
+padding:15px;
+border-radius:15px;
+margin-bottom:20px;
+}
+
+@media(max-width:900px){
+.grid{
+grid-template-columns:1fr;
+}
+}
+
+</style>
 
 </head>
 
 <body>
 
-<h1>Teste da Planilha</h1>
+<h1>📊 Dashboard de Vendas</h1>
 
-<div id="resultado">Carregando...</div>
+<div class="kpis">
 
-<hr>
+<div class="card">
+<h3>Lucro Total</h3>
+<h2 id="lucroTotal">-</h2>
+</div>
 
-<h2>Teste Plotly</h2>
+<div class="card">
+<h3>Faturamento</h3>
+<h2 id="faturamento">-</h2>
+</div>
 
-<div id="grafico" style="width:100%;height:500px;"></div>
+<div class="card">
+<h3>Ticket Médio</h3>
+<h2 id="ticket">-</h2>
+</div>
+
+<div class="card">
+<h3>Vendas</h3>
+<h2 id="vendas">-</h2>
+</div>
+
+<div class="card">
+<h3>Lucro Médio</h3>
+<h2 id="lucroMedio">-</h2>
+</div>
+
+<div class="card">
+<h3>Estoque Aberto</h3>
+<h2 id="estoque">-</h2>
+</div>
+
+</div>
+
+<div class="grid">
+
+<div class="chart">
+<div id="lucroMes"></div>
+</div>
+
+<div class="chart">
+<div id="fatMes"></div>
+</div>
+
+<div class="chart">
+<div id="topProdutos"></div>
+</div>
+
+<div class="chart">
+<div id="bottomProdutos"></div>
+</div>
+
+<div class="chart">
+<div id="canais"></div>
+</div>
+
+<div class="chart">
+<div id="prazoLucro"></div>
+</div>
+
+</div>
 
 <script>
 
 const CSV_URL =
 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR0zYaCXFQTdPJ0ze_HCpABeOtC5kfLlwAwhzWBKV_7v0BEFab5osnH9XVdd6-OxNGkEuZYi3-gVqxM/pub?output=csv';
 
+function dinheiro(v){
+
+if(!v) return 0;
+
+return Number(
+String(v)
+.replace('R$','')
+.replace(/\./g,'')
+.replace(',', '.')
+.replace(' ','')
+);
+
+}
+
+function dias(v){
+
+if(!v) return null;
+
+let n = String(v).match(/-?\d+/);
+
+return n ? Number(n[0]) : null;
+
+}
+
+function moeda(v){
+
+return v.toLocaleString(
+'pt-BR',
+{
+style:'currency',
+currency:'BRL'
+}
+);
+
+}
+
 Papa.parse(CSV_URL,{
-    download:true,
-    header:true,
-    skipEmptyLines:true,
 
-    complete:function(res){
+download:true,
+header:true,
+skipEmptyLines:true,
 
-        document.getElementById("resultado").innerHTML =
-            "✅ Planilha carregada<br><br>" +
-            "Linhas encontradas: " + res.data.length +
-            "<br><br>Primeiro Item: " + res.data[0].ITEM;
+complete:function(res){
 
-        Plotly.newPlot(
-            "grafico",
-            [{
-                x:["Jan","Fev","Mar","Abr"],
-                y:[100,250,180,300],
-                type:"bar"
-            }],
-            {
-                title:"✅ Plotly funcionando"
-            }
-        );
+let dados = res.data;
 
-    },
+dados.forEach(r=>{
 
-    error:function(err){
+r.lucro=dinheiro(r["LUCRO"]);
+r.venda=dinheiro(r["VALOR DE VENDA"]);
+r.compra=dinheiro(r["VALOR DE COMPRA"]);
+r.prazo=dias(r["QTD DIAS VENDA"]);
 
-        document.getElementById("resultado").innerHTML =
-            "❌ Erro: " + err;
+});
 
-        console.error(err);
+const vendas =
+dados.filter(x=>x["DATA DE VENDA"]);
 
-    }
+const lucroTotal =
+vendas.reduce((a,b)=>a+b.lucro,0);
+
+const faturamento =
+vendas.reduce((a,b)=>a+b.venda,0);
+
+document.getElementById("lucroTotal").innerHTML =
+moeda(lucroTotal);
+
+document.getElementById("faturamento").innerHTML =
+moeda(faturamento);
+
+document.getElementById("ticket").innerHTML =
+moeda(faturamento / vendas.length);
+
+document.getElementById("vendas").innerHTML =
+vendas.length;
+
+document.getElementById("lucroMedio").innerHTML =
+moeda(lucroTotal / vendas.length);
+
+document.getElementById("estoque").innerHTML =
+dados.filter(x=>!x["DATA DE VENDA"]).length;
+
+const lucroMes = {};
+const vendaMes = {};
+
+vendas.forEach(v=>{
+
+const d = new Date(v["DATA DE VENDA"]);
+
+if(isNaN(d)) return;
+
+const mes =
+d.getFullYear() + "-" +
+String(d.getMonth()+1).padStart(2,'0');
+
+lucroMes[mes] =
+(lucroMes[mes]||0)+v.lucro;
+
+vendaMes[mes] =
+(vendaMes[mes]||0)+v.venda;
+
+});
+
+Plotly.newPlot("lucroMes",[{
+x:Object.keys(lucroMes),
+y:Object.values(lucroMes),
+type:"scatter",
+mode:"lines+markers"
+}],
+{
+title:"Lucro Mensal",
+paper_bgcolor:"#111827",
+plot_bgcolor:"#111827",
+font:{color:"white"}
+});
+
+Plotly.newPlot("fatMes",[{
+x:Object.keys(vendaMes),
+y:Object.values(vendaMes),
+type:"bar"
+}],
+{
+title:"Faturamento Mensal",
+paper_bgcolor:"#111827",
+plot_bgcolor:"#111827",
+font:{color:"white"}
+});
+
+const produtos={};
+
+vendas.forEach(v=>{
+
+produtos[v.ITEM] =
+(produtos[v.ITEM]||0)+v.lucro;
+
+});
+
+const ranking =
+Object.entries(produtos)
+.sort((a,b)=>b[1]-a[1]);
+
+Plotly.newPlot("topProdutos",[{
+orientation:"h",
+type:"bar",
+y:ranking.slice(0,10).map(x=>x[0]),
+x:ranking.slice(0,10).map(x=>x[1])
+}],
+{
+title:"Top 10 Produtos",
+paper_bgcolor:"#111827",
+plot_bgcolor:"#111827",
+font:{color:"white"}
+});
+
+Plotly.newPlot("bottomProdutos",[{
+orientation:"h",
+type:"bar",
+y:ranking.slice(-10).map(x=>x[0]),
+x:ranking.slice(-10).map(x=>x[1])
+}],
+{
+title:"Menor Lucro",
+paper_bgcolor:"#111827",
+plot_bgcolor:"#111827",
+font:{color:"white"}
+});
+
+const canais={};
+
+vendas.forEach(v=>{
+
+let canal=v["MEIO DE VENDA"];
+
+if(!canal) canal="Outros";
+
+canais[canal]=(canais[canal]||0)+v.lucro;
+
+});
+
+Plotly.newPlot("canais",[{
+labels:Object.keys(canais),
+values:Object.values(canais),
+type:"pie"
+}],
+{
+title:"Lucro por Canal",
+paper_bgcolor:"#111827",
+font:{color:"white"}
+});
+
+Plotly.newPlot("prazoLucro",[{
+x:vendas.map(x=>x.prazo),
+y:vendas.map(x=>x.lucro),
+mode:"markers",
+type:"scatter"
+}],
+{
+title:"Prazo de Venda x Lucro",
+paper_bgcolor:"#111827",
+plot_bgcolor:"#111827",
+font:{color:"white"}
+});
+
+}
 
 });
 
