@@ -1,16 +1,51 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teste GitHub Pages</title>
-</head>
+<meta charset="UTF-8">
+<title>Teste CSV</title>
 
+://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+</head>
 <body>
 
-    <h1>GitHub Pages funcionando ✅</h1>
+<h1>Teste da Planilha</h1>
 
-    <p>Se você está vendo esta mensagem, o HTML foi carregado corretamente.</p>
+<div id="resultado">Carregando...</div>
+
+<script>
+
+const CSV_URL =
+'https://docs.google.com/spreadsheets/d/e/2PACX-1vR0zYaCXFQTdPJ0ze_HCpABeOtC5kfLlwAwhzWBKV_7v0BEFab5osnH9XVdd6-OxNGkEuZYi3-gVqxM/pub?output=csv';
+
+Papa.parse(CSV_URL,{
+    download:true,
+    header:true,
+    skipEmptyLines:true,
+
+    complete:function(res){
+
+        document.getElementById("resultado").innerHTML =
+            "✅ Planilha carregada<br><br>" +
+            "Linhas encontradas: " + res.data.length +
+            "<br><br>Primeiro Item: " + res.data[0].ITEM;
+
+        console.log(res.data);
+
+    },
+
+    error:function(err){
+
+        document.getElementById("resultado").innerHTML =
+            "❌ Erro: " + err;
+
+        console.error(err);
+
+    }
+
+});
+
+</script>
 
 </body>
 </html>
