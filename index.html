@@ -276,46 +276,6 @@ dias:diasParado
 .sort((a,b)=>b.dias-a.dias)
 .slice(0,10);
 
-Plotly.newPlot(
-"produtosParados",
-[{
-orientation:"h",
-type:"bar",
-y:parados.map(x=>x.item),
-x:parados.map(x=>x.dias)
-}],
-{
-title:"Top 10 Produtos Parados",
-paper_bgcolor:"#111827",
-plot_bgcolor:"#111827",
-font:{color:"white"}
-}
-);
-  
-{
-title:"Produtos em Estoque",
-paper_bgcolor:"#111827",
-plot_bgcolor:"#111827",
-font:{color:"white"}
-}
-);
-
-Plotly.newPlot(
-"lucroAcumulado",
-[{
-x:Object.keys(lucroMes),
-y:valoresAcumulados,
-mode:"lines+markers",
-type:"scatter",
-fill:"tozeroy"
-}]
-{
-title:"Lucro Acumulado",
-paper_bgcolor:"#111827",
-plot_bgcolor:"#111827",
-font:{color:"white"}
-}
-);
   
 const estoque =
 dados.filter(
@@ -332,14 +292,6 @@ estoqueProdutos[item] =
 (estoqueProdutos[item]||0)+1;
 
 });
-
-Plotly.newPlot(
-"estoqueGraf",
-[{
-x:Object.keys(estoqueProdutos),
-y:Object.values(estoqueProdutos),
-type:"bar"
-}]
 
 const vendas = dados.filter(
     x =>
@@ -373,6 +325,56 @@ vendas.reduce(
 (acc,item)=>acc+(item.prazo||0),
 0
 )/vendas.length;
+
+
+Plotly.newPlot(
+"produtosParados",
+[{
+orientation:"h",
+type:"bar",
+y:parados.map(x=>x.item),
+x:parados.map(x=>x.dias)
+}]
+{
+title:"Top 10 Produtos Parados",
+paper_bgcolor:"#111827",
+plot_bgcolor:"#111827",
+font:{color:"white"}
+}
+);
+  
+{
+title:"Produtos em Estoque",
+paper_bgcolor:"#111827",
+plot_bgcolor:"#111827",
+font:{color:"white"}
+}
+);
+
+Plotly.newPlot(
+"lucroAcumulado",
+[{
+x:Object.keys(lucroMes),
+y:valoresAcumulados
+mode:"lines+markers"
+type:"scatter",
+fill:"tozeroy"
+}]
+{
+title:"Lucro Acumulado",
+paper_bgcolor:"#111827",
+plot_bgcolor:"#111827",
+font:{color:"white"}
+}
+);
+
+Plotly.newPlot(
+"estoqueGraf",
+[{
+x:Object.keys(estoqueProdutos),
+y:Object.values(estoqueProdutos),
+type:"bar"
+}]
 
 document.getElementById("prazoMedio").innerHTML =
 prazoMedio.toFixed(1)+" dias";
