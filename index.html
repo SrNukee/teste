@@ -215,6 +215,13 @@ r.prazo=dias(r["QTD DIAS VENDA"]);
 
 });
 
+const vendas = dados.filter(
+    x =>
+    x["DATA DE VENDA"] &&
+    String(x["DATA DE VENDA"]).trim() !== "" &&
+    String(x["DATA DE VENDA"]).trim() !== "--"
+);
+
 const lucroTotal =
 vendas.reduce(
     (acc,item)=>acc + (item.lucro || 0),
