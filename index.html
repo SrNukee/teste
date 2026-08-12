@@ -249,13 +249,13 @@ document.getElementById("faturamento").innerHTML =
 moeda(faturamento);
 
 document.getElementById("ticket").innerHTML =
-moeda(faturamento / vendas.length);
+moeda(ticket);
 
 document.getElementById("vendas").innerHTML =
 vendas.length;
 
 document.getElementById("lucroMedio").innerHTML =
-moeda(lucroTotal / vendas.length);
+moeda(lucroMedio);
 
 document.getElementById("estoque").innerHTML =
 dados.filter(x=>!x["DATA DE VENDA"]).length;
@@ -368,21 +368,21 @@ font:{color:"white"}
 });
 
 Plotly.newPlot("prazoLucro",[{
-x:vendas.map(x=>x.prazo),
-y:vendas.map(x=>x.lucro),
-mode:"markers",
-type:"scatter"
+    x:vendas.map(x=>x.prazo),
+    y:vendas.map(x=>x.lucro),
+    mode:"markers",
+    type:"scatter"
 }],
 {
-title:"Prazo de Venda x Lucro",
-paper_bgcolor:"#111827",
-plot_bgcolor:"#111827",
-font:{color:"white"}
+    title:"Prazo de Venda x Lucro",
+    paper_bgcolor:"#111827",
+    plot_bgcolor:"#111827",
+    font:{color:"white"}
 });
 
-}
+} // fecha complete
 
-});
+}); // fecha Papa.parse
 
 </script>
 
