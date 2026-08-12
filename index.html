@@ -368,19 +368,25 @@ vendaMes[mes] =
 
 });
 
-{
-    title:"Lucro Acumulado",
-    paper_bgcolor:"#111827",
-    plot_bgcolor:"#111827",
-    font:{color:"white"}
-}
+const mesesOrdenados =
+Object.keys(lucroMes).sort(
+(a,b)=>
+new Date(a+"-01") -
+new Date(b+"-01")
 );
 
+const valoresLucro =
+mesesOrdenados.map(
+m => lucroMes[m]
+);
 
 Plotly.newPlot("lucroMes",[{
-x:Object.keys(lucroMes),
-y:Object.values(lucroMes),
+x:mesesOrdenados,
+y:valoresLucro,
 type:"bar",
+marker:{
+color:"#22d3ee"
+}
 }],
 {
 title:"Lucro Mensal",
