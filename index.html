@@ -154,22 +154,24 @@ function dinheiro(valor){
 
     valor = String(valor).trim();
 
-    if(valor === "")
+    if(valor === "" || valor === "--")
         return 0;
 
-    if(valor === "--")
-        return 0;
+    const negativo = valor.includes("-");
 
     valor = valor
         .replace(/R\$/g,"")
         .replace(/\s/g,"")
         .replace(/\./g,"")
         .replace(",",".")
-        .replace(/[^0-9.-]/g,'');
+        .replace(/[^0-9.]/g,"");
 
-    const numero = parseFloat(valor);
+    let numero = parseFloat(valor);
 
-    return isNaN(numero) ? 0 : numero;
+    if(isNaN(numero))
+        return 0;
+
+    return negativo ? -numero : numero;
 }
 
 function dias(v){
@@ -213,14 +215,25 @@ r.prazo=dias(r["QTD DIAS VENDA"]);
 
 });
 
-const vendas =
-dados.filter(x=>x["DATA DE VENDA"]);
-
 const lucroTotal =
-vendas.reduce((a,b)=>a+b.lucro,0);
+vendas.reduce(
+    (acc,item)=>acc + (item.lucro || 0),
+0);
 
 const faturamento =
-vendas.reduce((a,b)=>a+b.venda,0);
+vendas.reduce(
+    (acc,item)=>acc + (item.venda || 0),
+0);
+
+const ticket =
+vendas.length
+? faturamento / vendas.length
+: 0;
+
+const lucroMedio =
+vendas.length
+? lucroTotal / vendas.length
+: 0;
 
 document.getElementById("lucroTotal").innerHTML =
 moeda(lucroTotal);
