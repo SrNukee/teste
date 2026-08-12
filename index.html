@@ -285,7 +285,6 @@ Plotly.newPlot("lucroMes",[{
 x:Object.keys(lucroMes),
 y:Object.values(lucroMes),
 type:"bar",
-mode:"lines+markers"
 }],
 {
 title:"Lucro Mensal",
@@ -372,7 +371,7 @@ Plotly.newPlot("prazoLucro",[{
 x:vendas.map(x=>x.prazo),
 y:vendas.map(x=>x.lucro),
 mode:"markers",
-type:"bar"
+type:"scatter"
 }],
 {
 title:"Prazo de Venda x Lucro",
@@ -380,6 +379,7 @@ paper_bgcolor:"#111827",
 plot_bgcolor:"#111827",
 font:{color:"white"}
 });
+`
 
 }
 
