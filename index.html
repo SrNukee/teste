@@ -277,7 +277,7 @@ vendaMes[mes] =
 Plotly.newPlot("lucroMes",[{
 x:Object.keys(lucroMes),
 y:Object.values(lucroMes),
-type:"scatter",
+type:"bar",
 mode:"lines+markers"
 }],
 {
@@ -365,7 +365,7 @@ Plotly.newPlot("prazoLucro",[{
 x:vendas.map(x=>x.prazo),
 y:vendas.map(x=>x.lucro),
 mode:"markers",
-type:"scatter"
+type:"bar"
 }],
 {
 title:"Prazo de Venda x Lucro",
