@@ -209,6 +209,9 @@ skipEmptyLines:true,
 
 complete:function(res){
 
+document.getElementById("ultimaAtualizacao").innerHTML =
+new Date().toLocaleString("pt-BR");
+
 let dados = res.data;
 
 dados.forEach(r=>{
