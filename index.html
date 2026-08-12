@@ -85,6 +85,35 @@ grid-template-columns:1fr;
     <h2 id="ultimaAtualizacao">-</h2>
 </div>
 
+<div class="card">
+    <h3>🏆 Melhor Canal</h3>
+    <h2 id="melhorCanal">-</h2>
+</div>
+
+<div class="card">
+    <h3>🥇 Produto Mais Lucrativo</h3>
+    <h2 id="melhorProduto">-</h2>
+</div>
+
+<div class="card">
+    <h3>⚡ Prazo Médio Venda</h3>
+    <h2 id="prazoMedio">-</h2>
+</div>
+
+<div class="chart">
+<div id="estoqueGraf"></div>
+</div>
+
+<div class="chart">
+<div id="lucroAcumulado"></div>
+</div>
+
+<div class="chart">
+<div id="produtosParados"></div>
+</div>
+
+
+
 <div class="kpis">
 
 <div class="card">
@@ -223,6 +252,120 @@ r.prazo=dias(r["QTD DIAS VENDA"]);
 
 });
 
+let acumulado = 0;
+
+const hoje = new Date();
+
+const parados =
+dados
+.filter(x=>!x["DATA DE VENDA"])
+.map(x=>{
+
+const compra =
+new Date(x["DATA DE COMPRA"]);
+
+const diasParado =
+Math.floor(
+(hoje-compra)/(1000*60*60*24)
+);
+
+return{
+item:x.ITEM,
+dias:diasParado
+};
+
+})
+.sort((a,b)=>b.dias-a.dias)
+.slice(0,10);
+
+const valoresAcumulados =
+Object.values(lucroMes)
+.map(v => acumulado += v);
+
+Plotly.newPlot(
+"produtosParados",
+[{
+orientation:"h",
+type:"bar",
+y:parados.map(x=>x.item),
+x:parados.map(x=>x.dias)
+}],
+{
+title:"Top 10 Produtos Parados",
+paper_bgcolor:"#111827",
+plot_bgcolor:"#111827",
+font:{color:"white"}
+}
+);
+  
+Plotly.newPlot(
+"estoqueGraf",
+[{
+x:Object.keys(estoqueProdutos),
+y:Object.values(estoqueProdutos),
+type:"bar"
+}],
+{
+title:"Produtos em Estoque",
+paper_bgcolor:"#111827",
+plot_bgcolor:"#111827",
+font:{color:"white"}
+}
+);
+
+  
+Plotly.newPlot(
+"lucroAcumulado",
+[{
+x:Object.keys(lucroMes),
+y:valoresAcumulados,
+mode:"lines+markers",
+type:"scatter",
+fill:"tozeroy"
+}],
+{
+title:"Lucro Acumulado",
+paper_bgcolor:"#111827",
+plot_bgcolor:"#111827",
+font:{color:"white"}
+}
+);
+  
+const estoque =
+dados.filter(
+x => !x["DATA DE VENDA"]
+);
+
+const estoqueProdutos = {};
+
+estoque.forEach(v=>{
+
+const item = v.ITEM;
+
+estoqueProdutos[item] =
+(estoqueProdutos[item]||0)+1;
+
+});
+  
+const melhorProduto =
+ranking[0];
+
+document.getElementById("melhorProduto").innerHTML =
+melhorProduto ? melhorProduto[0] : "-";
+  
+const melhorProduto =
+ranking[0];
+
+document.getElementById("melhorProduto").innerHTML =
+melhorProduto ? melhorProduto[0] : "-";
+  
+const melhorCanal =
+Object.entries(canais)
+.sort((a,b)=>b[1]-a[1])[0];
+
+document.getElementById("melhorCanal").innerHTML =
+melhorCanal ? melhorCanal[0] : "-";
+  
 const vendas = dados.filter(
     x =>
     x["DATA DE VENDA"] &&
