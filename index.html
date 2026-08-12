@@ -147,18 +147,29 @@ grid-template-columns:1fr;
 const CSV_URL =
 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR0zYaCXFQTdPJ0ze_HCpABeOtC5kfLlwAwhzWBKV_7v0BEFab5osnH9XVdd6-OxNGkEuZYi3-gVqxM/pub?output=csv';
 
-function dinheiro(v){
+function dinheiro(valor){
 
-if(!v) return 0;
+    if(valor === null || valor === undefined)
+        return 0;
 
-return Number(
-String(v)
-.replace('R$','')
-.replace(/\./g,'')
-.replace(',', '.')
-.replace(' ','')
-);
+    valor = String(valor).trim();
 
+    if(valor === "")
+        return 0;
+
+    if(valor === "--")
+        return 0;
+
+    valor = valor
+        .replace(/R\$/g,"")
+        .replace(/\s/g,"")
+        .replace(/\./g,"")
+        .replace(",",".")
+        .replace(/[^0-9.-]/g,'');
+
+    const numero = parseFloat(valor);
+
+    return isNaN(numero) ? 0 : numero;
 }
 
 function dias(v){
