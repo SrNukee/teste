@@ -326,56 +326,6 @@ vendas.reduce(
 0
 )/vendas.length;
 
-
-Plotly.newPlot(
-"produtosParados",
-[{
-orientation:"h",
-type:"bar",
-y:parados.map(x=>x.item),
-x:parados.map(x=>x.dias)
-}]
-{
-title:"Top 10 Produtos Parados",
-paper_bgcolor:"#111827",
-plot_bgcolor:"#111827",
-font:{color:"white"}
-}
-);
-  
-{
-title:"Produtos em Estoque",
-paper_bgcolor:"#111827",
-plot_bgcolor:"#111827",
-font:{color:"white"}
-}
-);
-
-Plotly.newPlot(
-"lucroAcumulado",
-[{
-x:Object.keys(lucroMes),
-y:valoresAcumulados
-mode:"lines+markers"
-type:"scatter",
-fill:"tozeroy"
-}]
-{
-title:"Lucro Acumulado",
-paper_bgcolor:"#111827",
-plot_bgcolor:"#111827",
-font:{color:"white"}
-}
-);
-
-Plotly.newPlot(
-"estoqueGraf",
-[{
-x:Object.keys(estoqueProdutos),
-y:Object.values(estoqueProdutos),
-type:"bar"
-}]
-
 document.getElementById("prazoMedio").innerHTML =
 prazoMedio.toFixed(1)+" dias";
 
@@ -402,12 +352,6 @@ const vendaMes = {};
 
 vendas.forEach(v=>{
 
-let acumulado = 0;
-
-const valoresAcumulados =
-Object.values(lucroMes)
-.map(v => acumulado += v);
-
 const d = new Date(v["DATA DE VENDA"]);
 
 if(isNaN(d)) return;
@@ -424,15 +368,14 @@ vendaMes[mes] =
 
 });
 
-Plotly.newPlot(
-"lucroAcumulado",
-[{
-x:Object.keys(lucroMes),
-y:valoresAcumulados,
-mode:"lines+markers",
-type:"scatter",
-fill:"tozeroy"
-}] 
+{
+    title:"Lucro Acumulado",
+    paper_bgcolor:"#111827",
+    plot_bgcolor:"#111827",
+    font:{color:"white"}
+}
+);
+
 
 Plotly.newPlot("lucroMes",[{
 x:Object.keys(lucroMes),
@@ -515,6 +458,66 @@ if(!canal) canal="Outros";
 canais[canal]=(canais[canal]||0)+v.lucro;
 
 });
+
+// Produtos parados
+
+Plotly.newPlot(
+"produtosParados",
+[{
+orientation:"h",
+type:"bar",
+y:parados.map(x=>x.item),
+x:parados.map(x=>x.dias)
+}],
+{
+title:"Top 10 Produtos Parados",
+paper_bgcolor:"#111827",
+plot_bgcolor:"#111827",
+font:{color:"white"}
+}
+);
+
+// Produtos em estoque
+
+Plotly.newPlot(
+"estoqueGraf",
+[{
+x:Object.keys(estoqueProdutos),
+y:Object.values(estoqueProdutos),
+type:"bar"
+}],
+{
+title:"Produtos em Estoque",
+paper_bgcolor:"#111827",
+plot_bgcolor:"#111827",
+font:{color:"white"}
+}
+);
+
+// Lucro acumulado
+
+let acumulado = 0;
+
+const valoresAcumulados =
+Object.values(lucroMes)
+.map(v => acumulado += v);
+
+Plotly.newPlot(
+"lucroAcumulado",
+[{
+x:Object.keys(lucroMes),
+y:valoresAcumulados,
+mode:"lines+markers",
+type:"scatter",
+fill:"tozeroy"
+}],
+{
+title:"Lucro Acumulado",
+paper_bgcolor:"#111827",
+plot_bgcolor:"#111827",
+font:{color:"white"}
+}
+);
 
 const melhorCanal =
 Object.entries(canais)
