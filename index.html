@@ -292,13 +292,6 @@ font:{color:"white"}
 }
 );
   
-Plotly.newPlot(
-"estoqueGraf",
-[{
-x:Object.keys(estoqueProdutos),
-y:Object.values(estoqueProdutos),
-type:"bar"
-}],
 {
 title:"Produtos em Estoque",
 paper_bgcolor:"#111827",
@@ -307,7 +300,6 @@ font:{color:"white"}
 }
 );
 
-  
 Plotly.newPlot(
 "lucroAcumulado",
 [{
@@ -316,7 +308,7 @@ y:valoresAcumulados,
 mode:"lines+markers",
 type:"scatter",
 fill:"tozeroy"
-}],
+}]
 {
 title:"Lucro Acumulado",
 paper_bgcolor:"#111827",
@@ -340,6 +332,14 @@ estoqueProdutos[item] =
 (estoqueProdutos[item]||0)+1;
 
 });
+
+Plotly.newPlot(
+"estoqueGraf",
+[{
+x:Object.keys(estoqueProdutos),
+y:Object.values(estoqueProdutos),
+type:"bar"
+}]
 
 document.getElementById("melhorCanal").innerHTML =
 melhorCanal ? melhorCanal[0] : "-";
@@ -424,6 +424,16 @@ vendaMes[mes] =
 (vendaMes[mes]||0)+v.venda;
 
 });
+
+Plotly.newPlot(
+"lucroAcumulado",
+[{
+x:Object.keys(lucroMes),
+y:valoresAcumulados,
+mode:"lines+markers",
+type:"scatter",
+fill:"tozeroy"
+}] 
 
 Plotly.newPlot("lucroMes",[{
 x:Object.keys(lucroMes),
