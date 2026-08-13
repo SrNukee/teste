@@ -319,7 +319,7 @@ estoque.reduce(
 
 document.getElementById("valorEstoque").innerHTML =
 moeda(valorEstoque);
-  
+
 const tbody =
 document.querySelector("#tabelaEstoque tbody");
 
@@ -370,7 +370,28 @@ b[1].valorTotal - a[1].valorTotal
 
     if(data){
 
-        const compra = new Date(data);
+        const data = dados.data;
+
+if(data){
+
+    const partes = data.split("/");
+
+    if(partes.length === 3){
+
+        const compra = new Date(
+            partes[2],
+            partes[1] - 1,
+            partes[0]
+        );
+
+        diasEstoque = Math.floor(
+            (new Date() - compra) /
+            (1000 * 60 * 60 * 24)
+        );
+
+    }
+
+}
 
         if(!isNaN(compra)){
 
