@@ -389,11 +389,33 @@ estoque.forEach(item=>{
     estoqueAgrupado[nome].valorTotal +=
     (item.compra || 0);
 
+function converterDataBR(txt){
+
+    if(!txt) return null;
+
+    const p = txt.split("/");
+
+    if(p.length !== 3) return null;
+
+    let ano = parseInt(p[2],10);
+
+    if(ano < 100){
+        ano += 2000;
+    }
+
+    return new Date(
+        ano,
+        parseInt(p[1],10)-1,
+        parseInt(p[0],10)
+    );
+
+}
+
 const dataAtual =
-new Date(item["DATA DE COMPRA"]);
+converterDataBR(item["DATA DE COMPRA"]);
 
 const dataSalva =
-new Date(estoqueAgrupado[nome].data);
+converterDataBR(estoqueAgrupado[nome].data);
 
 if(
     !isNaN(dataAtual) &&
@@ -418,25 +440,39 @@ b[1].valorTotal - a[1].valorTotal
 
 console.log(produto, dados.data);
   
-    let diasEstoque = "-";
+let diasEstoque = "-";
 
-const data = dados.data;
+const data = String(dados.data).trim();
 
 if(data){
 
-    // Data serial do Excel/Sheets
-    if(!isNaN(data)){
+    const partes = data.split("/");
 
-        const compra = new Date(
-            (Number(data) - 25569) * 86400 * 1000
-        );
+    if(partes.length === 3){
+
+        const dia = parseInt(partes[0],10);
+        const mes = parseInt(partes[1],10);
+
+        let ano = parseInt(partes[2],10);
+
+        if(ano < 100){
+            ano += 2000;
+        }
+
+        const compra =
+        new Date(ano, mes - 1, dia);
+
+        const hoje = new Date();
 
         diasEstoque = Math.floor(
-            (new Date() - compra) /
+            (hoje.getTime() - compra.getTime())
+            /
             (1000 * 60 * 60 * 24)
         );
 
     }
+
+}
 
     // Data texto DD/MM/AAAA
     else{
