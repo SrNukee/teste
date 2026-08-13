@@ -358,7 +358,6 @@ const tbody =
 document.querySelector("#tabelaEstoque tbody");
 
 tbody.innerHTML = "";
-``
 
 const estoqueAgrupado = {};
 
@@ -398,7 +397,7 @@ b[1].valorTotal - a[1].valorTotal
 )
 .forEach(([produto,dados])=>{
 
-    let diasEstoque = "-";
+let diasEstoque = "-";
 
 const data = dados.data;
 
@@ -427,17 +426,6 @@ if(data){
     }
 
 }
-
-        if(!isNaN(compra)){
-
-            diasEstoque = Math.floor(
-                (new Date() - compra) /
-                (1000 * 60 * 60 * 24)
-            );
-
-        }
-
-    }
 
     const valorUnitario =
     dados.somaValores /
