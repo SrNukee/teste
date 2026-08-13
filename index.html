@@ -840,31 +840,31 @@ Plotly.newPlot(
     x: mesesOrdenados,
     y: valoresAcumulados,
 
-    mode: "lines+markers",
     type: "scatter",
+    mode: "lines+markers",
 
     line:{
         color:"#00e5ff",
-        width:5
+        width:5,
+        shape:"spline"
     },
 
     marker:{
-        color:"#ec4899",
         size:10,
-        line:{
-            color:"#ffffff",
-            width:2
-        }
-    }
+        color:"#ec4899"
+    },
+
+    fill:"tozeroy",
+    fillcolor:"rgba(0,229,255,.12)"
 }],
 {
-    title:"Lucro Acumulado",
+    title:"📈 Evolução do Lucro",
 
     paper_bgcolor:"rgba(17,24,39,.5)",
     plot_bgcolor:"rgba(17,24,39,.3)",
 
     font:{
-        color:"#ffffff"
+        color:"#fff"
     },
 
     xaxis:{
@@ -872,11 +872,11 @@ Plotly.newPlot(
     },
 
     yaxis:{
-        showgrid:true,
-        gridcolor:"rgba(255,255,255,.15)"
+        gridcolor:"rgba(255,255,255,.1)"
     }
 }
 );
+
 
 const melhorCanal =
 Object.entries(canais)
