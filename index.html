@@ -713,7 +713,8 @@ const vendaMes = {};
 
 vendas.forEach(v=>{
 
-const d = new Date(v["DATA DE VENDA"]);
+const d =
+converterDataBR(v["DATA DE VENDA"]);
 
 if(isNaN(d)) return;
 
