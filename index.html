@@ -514,10 +514,21 @@ r.prazo=dias(r["QTD DIAS VENDA"]);
 
 });
   
-const estoque =
-dados.filter(
-x => !x["DATA DE VENDA"]
-);
+const estoque = dados.filter(item => {
+
+    const vendido =
+        item["DATA DE VENDA"] &&
+        String(item["DATA DE VENDA"]).trim() !== "" &&
+        String(item["DATA DE VENDA"]).trim() !== "--";
+
+    const chegou =
+        item["DATA DE CHEGADA"] &&
+        String(item["DATA DE CHEGADA"]).trim() !== "" &&
+        String(item["DATA DE CHEGADA"]).trim() !== "--";
+
+    return chegou && !vendido;
+
+});
 
 console.log("DATA COMPRA:", estoque[0]["DATA DE COMPRA"]);
 
@@ -710,7 +721,7 @@ document.getElementById("lucroMedio").innerHTML =
 moeda(lucroMedio);
 
 document.getElementById("estoque").innerHTML =
-dados.filter(x=>!x["DATA DE VENDA"]).length;
+estoque.length;
 
 const lucroMes = {};
 const vendaMes = {};
