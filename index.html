@@ -328,11 +328,6 @@ estoque.forEach(item=>{
 
 let diasEstoque = "-";
 
-if(item["DATA DE COMPRA"]){
-
-const compra =
-let diasEstoque = "-";
-
 const data = item["DATA DE COMPRA"];
 
 if(data){
@@ -347,16 +342,8 @@ if(data){
         );
 
     }
-
 }
-
-diasEstoque =
-Math.floor(
-(new Date()-compra) /
-(1000*60*60*24)
-);
-
-}
+`
 
 tbody.innerHTML += `
 <tr>
