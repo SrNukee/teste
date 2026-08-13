@@ -82,9 +82,48 @@ grid-template-columns:1fr;
 
 <div class="kpis">
 
+<div class="chart">
+
+<h3>📦 Estoque Atual</h3>
+
+<table id="tabelaEstoque"
+style="width:100%;border-collapse:collapse;color:white;">
+
+<thead>
+
+<tr>
+<th style="padding:10px;text-align:left;">
+Produto
+</th>
+
+<th style="padding:10px;text-align:center;">
+Compra
+</th>
+
+<th style="padding:10px;text-align:center;">
+Dias
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+</tbody>
+
+</table>
+
+</div>
+  
 <div class="card">
     <h3>Última Atualização</h3>
     <h2 id="ultimaAtualizacao">-</h2>
+</div>
+
+<div class="card">
+    <h3>💰 Valor em Estoque</h3>
+    <h2 id="valorEstoque">-</h2>
 </div>
 
 <div class="card">
@@ -105,18 +144,8 @@ grid-template-columns:1fr;
 </div>
 
 <div class="chart">
-<div id="estoqueGraf"></div>
-</div>
-
-<div class="chart">
 <div id="lucroAcumulado"></div>
 </div>
-
-<div class="chart">
-<div id="produtosParados"></div>
-</div>
-
-
 
 <div class="kpis">
 
@@ -255,38 +284,64 @@ r.compra=dinheiro(r["VALOR DE COMPRA"]);
 r.prazo=dias(r["QTD DIAS VENDA"]);
 
 });
-
-const hoje = new Date();
-
-const parados =
-dados
-.filter(x=>!x["DATA DE VENDA"])
-.map(x=>{
-
-const compra =
-new Date(x["DATA DE COMPRA"]);
-
-const diasParado =
-Math.floor(
-(hoje-compra)/(1000*60*60*24)
-);
-
-return{
-item:x.ITEM,
-dias:diasParado
-};
-
-})
-.sort((a,b)=>b.dias-a.dias)
-.slice(0,10);
-
   
 const estoque =
 dados.filter(
 x => !x["DATA DE VENDA"]
 );
 
+const valorEstoque =
+estoque.reduce(
+(acc,item)=>acc + (item.compra || 0),
+0
+);
+
+document.getElementById("valorEstoque").innerHTML =
+moeda(valorEstoque);
+  
 const estoqueProdutos = {};
+
+const tbody =
+document.querySelector("#tabelaEstoque tbody");
+
+tbody.innerHTML = "";
+
+estoque.forEach(item=>{
+
+let diasEstoque = "-";
+
+if(item["DATA DE COMPRA"]){
+
+const compra =
+new Date(item["DATA DE COMPRA"]);
+
+diasEstoque =
+Math.floor(
+(new Date()-compra) /
+(1000*60*60*24)
+);
+
+}
+
+tbody.innerHTML += `
+<tr>
+
+<td style="padding:10px;border-top:1px solid #2d3748;">
+${item.ITEM || "-"}
+</td>
+
+<td style="padding:10px;border-top:1px solid #2d3748;text-align:center;">
+${item["VALOR DE COMPRA"] || "-"}
+</td>
+
+<td style="padding:10px;border-top:1px solid #2d3748;text-align:center;">
+${diasEstoque}
+</td>
+
+</tr>
+`;
+
+});
 
 estoque.forEach(v=>{
 
@@ -468,41 +523,6 @@ if(!canal) canal="Outros";
 canais[canal]=(canais[canal]||0)+v.lucro;
 
 });
-
-// Produtos parados
-
-Plotly.newPlot(
-"produtosParados",
-[{
-orientation:"h",
-type:"bar",
-y:parados.map(x=>x.item),
-x:parados.map(x=>x.dias)
-}],
-{
-title:"Top 10 Produtos Parados",
-paper_bgcolor:"#111827",
-plot_bgcolor:"#111827",
-font:{color:"white"}
-}
-);
-
-// Produtos em estoque
-
-Plotly.newPlot(
-"estoqueGraf",
-[{
-x:Object.keys(estoqueProdutos),
-y:Object.values(estoqueProdutos),
-type:"bar"
-}],
-{
-title:"Produtos em Estoque",
-paper_bgcolor:"#111827",
-plot_bgcolor:"#111827",
-font:{color:"white"}
-}
-);
 
 // Lucro acumulado
 
