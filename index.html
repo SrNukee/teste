@@ -800,7 +800,12 @@ y:ranking.slice(0,10).map(x=>x[0]),
 x:ranking.slice(0,10).map(x=>x[1])
 }],
 {
-title:"Top 10 Produtos",
+    title:"Top 10 Produtos",
+
+    yaxis:{
+        autorange:"reversed"
+    },
+
 paper_bgcolor:"rgba(17,24,39,.5)",
 plot_bgcolor:"rgba(17,24,39,.3)",
 font:{color:"white"}
@@ -814,6 +819,11 @@ x:ranking.slice(-10).map(x=>x[1])
 }],
 {
 title:"Menor Lucro",
+
+    yaxis:{
+        autorange:"reversed"
+    },
+
 paper_bgcolor:"rgba(17,24,39,.5)",
 plot_bgcolor:"rgba(17,24,39,.3)",
 font:{color:"white"}
