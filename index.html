@@ -26,18 +26,18 @@ console.log("Papa carregado:", typeof Papa);
 body{
     background:
     radial-gradient(circle at top left,
-        rgba(168,85,247,.25),
+        rgba(220,38,38,.20),
         transparent 35%),
 
     radial-gradient(circle at top right,
-        rgba(236,72,153,.20),
+        rgba(255,0,60,.20),
         transparent 35%),
 
     radial-gradient(circle at bottom center,
-        rgba(59,130,246,.15),
+        rgba(127,29,29,.15),
         transparent 40%),
 
-    #050816;
+    #050505;
 
     color:white;
     font-family:'Exo 2',sans-serif;
@@ -68,9 +68,9 @@ margin-bottom:20px;
     1px solid rgba(236,72,153,.35);
 
 box-shadow:
-0 0 15px rgba(236,72,153,.25),
-0 0 35px rgba(236,72,153,.20),
-0 0 80px rgba(236,72,153,.10);
+0 0 15px rgba(255,0,60,.25),
+0 0 35px rgba(255,0,60,.20),
+0 0 80px rgba(255,0,60,.10);
 
     padding:20px;
     border-radius:18px;
@@ -84,9 +84,10 @@ box-shadow:
     transform:
     translateY(-3px);
 
-    box-shadow:
-    0 0 15px rgba(236,72,153,.4),
-    0 0 35px rgba(236,72,153,.25);
+box-shadow:
+0 0 15px rgba(255,0,60,.25),
+0 0 35px rgba(255,0,60,.20),
+0 0 80px rgba(255,0,60,.10);
 
 }
 
@@ -120,10 +121,10 @@ h1{
 
     color:white;
 
-    text-shadow:
-        0 0 10px #ec4899,
-        0 0 25px #a855f7,
-        0 0 45px #00e5ff;
+text-shadow:
+0 0 10px #ff003c,
+0 0 30px #ff1744,
+0 0 60px #ff5252;
 
 }
 
@@ -149,10 +150,11 @@ color:#9ca3af;
     font-size:2rem;
     font-weight:700;
 
-    color:#00e5ff;
+    color:#ff1744;
 
-    text-shadow:
-    0 0 8px rgba(0,229,255,.8);
+text-shadow:
+0 0 10px rgba(255,0,60,.9),
+0 0 25px rgba(255,0,60,.6);
 
 }
 
@@ -172,10 +174,12 @@ backdrop-filter:
 blur(15px);
 
 border:
-1px solid rgba(236,72,153,.2);
+1px solid rgba(236,72,153,.35);
 
 box-shadow:
-0 0 30px rgba(168,85,247,.15);
+0 0 15px rgba(255,0,60,.25),
+0 0 35px rgba(255,0,60,.20),
+0 0 80px rgba(255,0,60,.10);
 
 padding:15px;
 border-radius:20px;
@@ -207,7 +211,7 @@ margin-bottom:20px;
     rgba(17,24,39,.4);
 
     border:
-    1px solid rgba(168,85,247,.25);
+    1px solid rgba(220,38,38,.20);
 
     border-radius:15px;
 
@@ -747,7 +751,7 @@ x:mesesOrdenados,
 y:valoresLucro,
 type:"bar",
 marker:{
-color:"#22d3ee"
+color:"#ff003c"
 }
 }],
 {
@@ -852,7 +856,7 @@ Plotly.newPlot(
     mode: "lines+markers",
 
     line:{
-        color:"#00e5ff",
+        color:"#ff1744",
         width:5,
         shape:"spline"
     },
@@ -863,7 +867,7 @@ Plotly.newPlot(
     },
 
     fill:"tozeroy",
-    fillcolor:"rgba(0,229,255,.12)"
+fillcolor:"rgba(255,0,60,.15)"
 }],
 {
     title:"📈 Evolução do Lucro",
