@@ -66,6 +66,24 @@ border-radius:15px;
 margin-bottom:20px;
 }
 
+#tabelaEstoque{
+    font-size:14px;
+    width:100%;
+}
+
+#tabelaEstoque th,
+#tabelaEstoque td{
+    padding:8px;
+    border-bottom:1px solid #1f2937;
+}
+
+#tabelaEstoque th{
+    position:sticky;
+    top:0;
+    background:#111827;
+    text-align:left;
+}
+
 @media(max-width:900px){
 .grid{
 grid-template-columns:1fr;
@@ -81,38 +99,6 @@ grid-template-columns:1fr;
 <h1>📊 Dashboard de Vendas</h1>
 
 <div class="kpis">
-
-<div class="chart">
-
-<h3>📦 Estoque Atual</h3>
-
-<div style="
-max-height:300px;
-overflow-y:auto;
-">
-
-<table id="tabelaEstoque"
-style="
-width:100%;
-border-collapse:collapse;
-color:white;
-">
-
-<thead>
-<tr>
-<th>Produto</th>
-<th>Compra</th>
-<th>Dias</th>
-</tr>
-</thead>
-
-<tbody></tbody>
-
-</table>
-
-</div>
-
-</div>
   
 <div class="card">
     <h3>Última Atualização</h3>
@@ -140,6 +126,8 @@ color:white;
 </div>
 
 </div>
+
+
 
 <div class="chart">
 <div id="lucroAcumulado"></div>
@@ -203,6 +191,38 @@ color:white;
 
 <div class="chart">
 <div id="prazoLucro"></div>
+</div>
+
+</div>
+
+<div class="chart">
+
+<h3>📦 Estoque Atual</h3>
+
+<div style="
+max-height:300px;
+overflow-y:auto;
+">
+
+<table id="tabelaEstoque"
+style="
+width:100%;
+border-collapse:collapse;
+color:white;
+">
+
+<thead>
+<tr>
+<th>Produto</th>
+<th>Compra</th>
+<th>Dias</th>
+</tr>
+</thead>
+
+<tbody></tbody>
+
+</table>
+
 </div>
 
 </div>
@@ -317,22 +337,17 @@ const data = item["DATA DE COMPRA"];
 
 if(data){
 
-    const partes = data.split("/");
+    const compra = new Date(data);
 
-    if(partes.length === 3){
+    if(!isNaN(compra)){
 
-        const compra = new Date(
-            partes[2],
-            partes[0]-1,
-            partes[1]
-        );
-
-        diasEstoque =
-        Math.floor(
-            (new Date()-compra)/(1000*60*60*24)
+        diasEstoque = Math.floor(
+            (new Date() - compra) /
+            (1000 * 60 * 60 * 24)
         );
 
     }
+
 }
 
 diasEstoque =
