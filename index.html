@@ -416,9 +416,26 @@ b[1].valorTotal - a[1].valorTotal
 
     let diasEstoque = "-";
 
-    const data = dados.data;
+const data = dados.data;
 
-    if(data){
+if(data){
+
+    // Data serial do Excel/Sheets
+    if(!isNaN(data)){
+
+        const compra = new Date(
+            (Number(data) - 25569) * 86400 * 1000
+        );
+
+        diasEstoque = Math.floor(
+            (new Date() - compra) /
+            (1000 * 60 * 60 * 24)
+        );
+
+    }
+
+    // Data texto DD/MM/AAAA
+    else{
 
         const partes = String(data).split("/");
 
@@ -431,18 +448,16 @@ b[1].valorTotal - a[1].valorTotal
             const compra =
             new Date(ano, mes - 1, dia);
 
-            if(!isNaN(compra)){
-
-                diasEstoque = Math.floor(
-                    (new Date() - compra) /
-                    (1000 * 60 * 60 * 24)
-                );
-
-            }
+            diasEstoque = Math.floor(
+                (new Date() - compra) /
+                (1000 * 60 * 60 * 24)
+            );
 
         }
 
     }
+
+}
 
     const valorUnitario =
     dados.somaValores /
