@@ -443,26 +443,6 @@ document.querySelector("#tabelaEstoque tbody");
 
 tbody.innerHTML = "";
 
-const estoqueAgrupado = {};
-
-estoque.forEach(item=>{
-
-    const nome =
-    (item.ITEM || "Sem nome").trim();
-
-    if(!estoqueAgrupado[nome]){
-
-        estoqueAgrupado[nome] = {
-
-            quantidade:0,
-            valorTotal:0,
-            somaValores:0,
-            data:item["DATA DE COMPRA"] || null
-
-        };
-
-    }
-
   function converterDataBR(txt){
 
     if(!txt) return null;
@@ -484,6 +464,26 @@ estoque.forEach(item=>{
     );
 
 }
+
+const estoqueAgrupado = {};
+
+estoque.forEach(item=>{
+
+    const nome =
+    (item.ITEM || "Sem nome").trim();
+
+    if(!estoqueAgrupado[nome]){
+
+        estoqueAgrupado[nome] = {
+
+            quantidade:0,
+            valorTotal:0,
+            somaValores:0,
+            data:item["DATA DE COMPRA"] || null
+
+        };
+
+    }
 
     estoqueAgrupado[nome].quantidade++;
 
@@ -527,19 +527,6 @@ let diasEstoque = "-";
 const data = String(dados.data).trim();
 
 if(data){
-
-    const partes = data.split("/");
-
-    if(partes.length === 3){
-
-        const dia = parseInt(partes[0],10);
-        const mes = parseInt(partes[1],10);
-
-        let ano = parseInt(partes[2],10);
-
-        if(ano < 100){
-            ano += 2000;
-        }
 
         const compra =
         new Date(ano, mes - 1, dia);
