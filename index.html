@@ -835,6 +835,13 @@ const valoresAcumulados =
 Object.values(lucroMes)
 .map(v => acumulado += v);
 
+console.table(
+    vendas.map(v => ({
+        item: v.ITEM,
+        data: v["DATA DE VENDA"]
+    }))
+);
+
 Plotly.newPlot(
 "lucroAcumulado",
 [{
