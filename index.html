@@ -839,6 +839,7 @@ Plotly.newPlot(
 [{
     x: mesesOrdenados,
     y: valoresAcumulados,
+
     mode: "lines+markers",
     type: "scatter",
 
@@ -848,15 +849,32 @@ Plotly.newPlot(
     },
 
     marker:{
+        color:"#ec4899",
         size:10,
-        color:"#00e5ff"
+        line:{
+            color:"#ffffff",
+            width:2
+        }
     }
 }],
 {
     title:"Lucro Acumulado",
+
     paper_bgcolor:"rgba(17,24,39,.5)",
     plot_bgcolor:"rgba(17,24,39,.3)",
-    font:{color:"white"}
+
+    font:{
+        color:"#ffffff"
+    },
+
+    xaxis:{
+        showgrid:false
+    },
+
+    yaxis:{
+        showgrid:true,
+        gridcolor:"rgba(255,255,255,.15)"
+    }
 }
 );
 
