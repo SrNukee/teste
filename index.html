@@ -84,6 +84,40 @@ margin-bottom:20px;
     text-align:left;
 }
 
+#tabelaEstoque{
+    width:100%;
+    table-layout:fixed;
+}
+
+#tabelaEstoque th:nth-child(1),
+#tabelaEstoque td:nth-child(1){
+    width:40%;
+}
+
+#tabelaEstoque th:nth-child(2),
+#tabelaEstoque td:nth-child(2){
+    width:8%;
+    text-align:center;
+}
+
+#tabelaEstoque th:nth-child(3),
+#tabelaEstoque td:nth-child(3){
+    width:17%;
+    text-align:right;
+}
+
+#tabelaEstoque th:nth-child(4),
+#tabelaEstoque td:nth-child(4){
+    width:17%;
+    text-align:right;
+}
+
+#tabelaEstoque th:nth-child(5),
+#tabelaEstoque td:nth-child(5){
+    width:8%;
+    text-align:center;
+}
+
 @media(max-width:900px){
 .grid{
 grid-template-columns:1fr;
@@ -366,28 +400,29 @@ b[1].valorTotal - a[1].valorTotal
 
     let diasEstoque = "-";
 
-    const data = dados.data;
-
-    if(data){
-
-        const data = dados.data;
+const data = dados.data;
 
 if(data){
 
-    const partes = data.split("/");
+    const partes = String(data).split("/");
 
     if(partes.length === 3){
 
-        const compra = new Date(
-            partes[2],
-            partes[1] - 1,
-            partes[0]
-        );
+        const dia = Number(partes[0]);
+        const mes = Number(partes[1]);
+        const ano = Number(partes[2]);
 
-        diasEstoque = Math.floor(
-            (new Date() - compra) /
-            (1000 * 60 * 60 * 24)
-        );
+        const compra =
+        new Date(ano, mes - 1, dia);
+
+        if(!isNaN(compra)){
+
+            diasEstoque = Math.floor(
+                (new Date() - compra) /
+                (1000 * 60 * 60 * 24)
+            );
+
+        }
 
     }
 
