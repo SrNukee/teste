@@ -463,15 +463,7 @@ estoque.forEach(item=>{
 
     }
 
-    estoqueAgrupado[nome].quantidade++;
-
-    estoqueAgrupado[nome].somaValores +=
-    (item.compra || 0);
-
-    estoqueAgrupado[nome].valorTotal +=
-    (item.compra || 0);
-
-function converterDataBR(txt){
+  function converterDataBR(txt){
 
     if(!txt) return null;
 
@@ -492,6 +484,14 @@ function converterDataBR(txt){
     );
 
 }
+
+    estoqueAgrupado[nome].quantidade++;
+
+    estoqueAgrupado[nome].somaValores +=
+    (item.compra || 0);
+
+    estoqueAgrupado[nome].valorTotal +=
+    (item.compra || 0);
 
 const dataAtual =
 converterDataBR(item["DATA DE COMPRA"]);
@@ -556,33 +556,17 @@ if(data){
 
 }
 
-    // Data texto DD/MM/AAAA
-    else{
-
-        const partes = String(data).split("/");
-
-        if(partes.length === 3){
-
-const dia = Number(partes[0]);
-const mes = Number(partes[1]);
-
-let ano = Number(partes[2]);
-
-if(ano < 100){
-    ano += 2000;
-}
+let diasEstoque = "-";
 
 const compra =
-new Date(ano, mes - 1, dia);
+converterDataBR(dados.data);
 
-            diasEstoque = Math.floor(
-                (new Date() - compra) /
-                (1000 * 60 * 60 * 24)
-            );
+if(compra){
 
-        }
-
-    }
+    diasEstoque = Math.floor(
+        (Date.now() - compra.getTime())
+        / 86400000
+    );
 
 }
 
