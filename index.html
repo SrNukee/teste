@@ -345,6 +345,8 @@ dados.filter(
 x => !x["DATA DE VENDA"]
 );
 
+console.log("DATA COMPRA:", estoque[0]["DATA DE COMPRA"]);
+
 const valorEstoque =
 estoque.reduce(
 (acc,item)=>acc + (item.compra || 0),
