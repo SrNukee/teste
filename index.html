@@ -313,7 +313,29 @@ let diasEstoque = "-";
 if(item["DATA DE COMPRA"]){
 
 const compra =
-new Date(item["DATA DE COMPRA"]);
+let diasEstoque = "-";
+
+const data = item["DATA DE COMPRA"];
+
+if(data){
+
+    const partes = data.split("/");
+
+    if(partes.length === 3){
+
+        const compra = new Date(
+            partes[2],
+            partes[0]-1,
+            partes[1]
+        );
+
+        diasEstoque =
+        Math.floor(
+            (new Date()-compra)/(1000*60*60*24)
+        );
+
+    }
+}
 
 diasEstoque =
 Math.floor(
