@@ -837,17 +837,26 @@ Object.values(lucroMes)
 Plotly.newPlot(
 "lucroAcumulado",
 [{
-x:Object.keys(lucroMes),
-y:valoresAcumulados,
-mode:"lines+markers",
-type:"scatter",
-fill:"tozeroy"
+    x: mesesOrdenados,
+    y: valoresAcumulados,
+    mode: "lines+markers",
+    type: "scatter",
+
+    line:{
+        color:"#00e5ff",
+        width:5
+    },
+
+    marker:{
+        size:10,
+        color:"#00e5ff"
+    }
 }],
 {
-title:"Lucro Acumulado",
-paper_bgcolor:"rgba(17,24,39,.5)",
-plot_bgcolor:"rgba(17,24,39,.3)",
-font:{color:"white"}
+    title:"Lucro Acumulado",
+    paper_bgcolor:"rgba(17,24,39,.5)",
+    plot_bgcolor:"rgba(17,24,39,.3)",
+    font:{color:"white"}
 }
 );
 
