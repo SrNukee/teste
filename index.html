@@ -334,37 +334,28 @@ tbody.innerHTML = "";
 
 const estoqueAgrupado = {};
 
+const tbody =
+document.querySelector("#tabelaEstoque tbody");
+
+tbody.innerHTML = "";
+
+// Agrupar estoque por produto
+
+const estoqueAgrupado = {};
+
 estoque.forEach(item=>{
 
-    const nome = item.ITEM || "Sem nome";
+    const nome =
+    (item.ITEM || "Sem nome").trim();
 
     if(!estoqueAgrupado[nome]){
-
-        let diasEstoque = "-";
-
-        const data = item["DATA DE COMPRA"];
-
-        if(data){
-
-            const compra = new Date(data);
-
-            if(!isNaN(compra)){
-
-                diasEstoque = Math.floor(
-                    (new Date() - compra) /
-                    (1000 * 60 * 60 * 24)
-                );
-
-            }
-
-        }
 
         estoqueAgrupado[nome] = {
 
             quantidade:0,
-            valorUnitario:item.compra || 0,
             valorTotal:0,
-            dias:diasEstoque
+            somaValores:0,
+            data:item["DATA DE COMPRA"]
 
         };
 
@@ -372,16 +363,47 @@ estoque.forEach(item=>{
 
     estoqueAgrupado[nome].quantidade++;
 
+    estoqueAgrupado[nome].somaValores +=
+    (item.compra || 0);
+
     estoqueAgrupado[nome].valorTotal +=
     (item.compra || 0);
 
 });
 
+// Montar tabela
+
 Object.entries(estoqueAgrupado)
-.sort((a,b)=>b[1].valorTotal-a[1].valorTotal)
+.sort((a,b)=>
+b[1].valorTotal - a[1].valorTotal
+)
 .forEach(([produto,dados])=>{
 
+    let diasEstoque = "-";
+
+    const data = dados.data;
+
+    if(data){
+
+        const compra = new Date(data);
+
+        if(!isNaN(compra)){
+
+            diasEstoque = Math.floor(
+                (new Date() - compra) /
+                (1000 * 60 * 60 * 24)
+            );
+
+        }
+
+    }
+
+    const valorUnitario =
+    dados.somaValores /
+    dados.quantidade;
+
     tbody.innerHTML += `
+
     <tr>
 
         <td>${produto}</td>
@@ -391,7 +413,7 @@ Object.entries(estoqueAgrupado)
         </td>
 
         <td style="text-align:right;">
-            ${moeda(dados.valorUnitario)}
+            ${moeda(valorUnitario)}
         </td>
 
         <td style="text-align:right;">
@@ -399,10 +421,11 @@ Object.entries(estoqueAgrupado)
         </td>
 
         <td style="text-align:center;">
-            ${dados.dias}
+            ${diasEstoque}
         </td>
 
     </tr>
+
     `;
 
 });
