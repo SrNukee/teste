@@ -742,30 +742,18 @@ m => lucroMes[m]
 );
 
 Plotly.newPlot("lucroMes",[{
-    x:mesesOrdenados,
-    y:valoresLucro,
-    type:"bar",
-
-    marker:{
-        color:"#00e5ff",
-        line:{
-            color:"#ffffff20",
-            width:1
-        }
-    }
+x:mesesOrdenados,
+y:valoresLucro,
+type:"bar",
+marker:{
+color:"#22d3ee"
+}
 }],
 {
-    title:"Lucro Mensal",
-
-    bargap:0,
-    bargroupgap:0,
-
-    paper_bgcolor:"rgba(17,24,39,.5)",
-    plot_bgcolor:"rgba(17,24,39,.3)",
-
-    font:{
-        color:"#fff"
-    }
+title:"Lucro Mensal",
+paper_bgcolor:"rgba(17,24,39,.5)",
+plot_bgcolor:"rgba(17,24,39,.3)",
+font:{color:"white"}
 });
 
 Plotly.newPlot("fatMes",[{
