@@ -438,6 +438,40 @@ color:white;
 
 </div>
 
+<div class="chart">
+
+<h3>🚚 Produtos em Trânsito</h3>
+
+<div style="
+max-height:300px;
+overflow-y:auto;
+">
+
+<table id="tabelaTransito"
+style="
+width:100%;
+border-collapse:collapse;
+color:white;
+">
+
+<thead>
+<tr>
+<th>Produto</th>
+<th>Qtd</th>
+<th>Valor Unit.</th>
+<th>Valor Estoque</th>
+<th>Dias</th>
+</tr>
+</thead>
+
+<tbody></tbody>
+
+</table>
+
+</div>
+
+</div>
+
 <script>
 
 const CSV_URL =
@@ -527,6 +561,57 @@ const estoque = dados.filter(item => {
         String(item["DATA DE CHEGADA"]).trim() !== "--";
 
     return chegou && !vendido;
+
+});
+
+const transito = dados.filter(item => {
+
+    const vendido =
+        item["DATA DE VENDA"] &&
+        String(item["DATA DE VENDA"]).trim() !== "" &&
+        String(item["DATA DE VENDA"]).trim() !== "--";
+
+    const chegou =
+        item["DATA DE CHEGADA"] &&
+        String(item["DATA DE CHEGADA"]).trim() !== "" &&
+        String(item["DATA DE CHEGADA"]).trim() !== "--";
+
+    return !chegou && !vendido;
+
+});
+
+const tbodyTransito =
+document.querySelector("#tabelaTransito tbody");
+
+tbodyTransito.innerHTML = "";
+
+const transitoAgrupado = {};
+
+transito.forEach(item => {
+
+    const nome =
+    (item.ITEM || "Sem nome").trim();
+
+    if(!transitoAgrupado[nome]){
+
+        transitoAgrupado[nome] = {
+
+            quantidade:0,
+            valorTotal:0,
+            somaValores:0,
+            data:item["DATA DE COMPRA"] || null
+
+        };
+
+    }
+
+    transitoAgrupado[nome].quantidade++;
+
+    transitoAgrupado[nome].somaValores +=
+    (item.compra || 0);
+
+    transitoAgrupado[nome].valorTotal +=
+    (item.compra || 0);
 
 });
 
@@ -662,6 +747,54 @@ if(compra){
 
         <td style="text-align:center">
             ${diasEstoque}
+        </td>
+
+    </tr>
+    `;
+
+});
+
+Object.entries(transitoAgrupado)
+.sort((a,b)=>b[1].valorTotal-a[1].valorTotal)
+.forEach(([produto,dados])=>{
+
+    let diasPedido = "-";
+
+    const compra =
+    converterDataBR(dados.data);
+
+    if(compra){
+
+        diasPedido = Math.floor(
+            (Date.now()-compra.getTime())
+            / 86400000
+        );
+
+    }
+
+    const valorUnitario =
+    dados.somaValores /
+    dados.quantidade;
+
+    tbodyTransito.innerHTML += `
+    <tr>
+
+        <td>${produto}</td>
+
+        <td style="text-align:center">
+            ${dados.quantidade}
+        </td>
+
+        <td style="text-align:right">
+            ${moeda(valorUnitario)}
+        </td>
+
+        <td style="text-align:right">
+            ${moeda(dados.valorTotal)}
+        </td>
+
+        <td style="text-align:center">
+            ${diasPedido}
         </td>
 
     </tr>
